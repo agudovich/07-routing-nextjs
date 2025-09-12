@@ -1,0 +1,16 @@
+.container {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 20px;
+}
+
+.title {
+  font-size: 32px;
+  margin: 0 0 12px;
+}
+
+.description {
+  color: #444;
+  line-height: 1.6;
+  margin: 0 0 10px;
+}
