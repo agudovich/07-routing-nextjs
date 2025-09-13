@@ -1,4 +1,3 @@
-// app/notes/@modal/(.)[id]/page.tsx
 import {
   HydrationBoundary,
   dehydrate,

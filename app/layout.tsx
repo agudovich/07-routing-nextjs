@@ -1,28 +1,32 @@
+// app/layout.tsx
 import type { Metadata } from "next";
-import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import "./globals.css";
+
+import Providers from "./providers";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
-import "modern-normalize/modern-normalize.css";
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "NoteHub",
-  description: "Notes on Next.js + React Query",
+  description: "Simple notes app",
 };
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body>
-        <TanStackProvider>
+        <Providers>
           <Header />
-          {children}
+          <main>{children}</main>
           <Footer />
-        </TanStackProvider>
+          {modal}
+        </Providers>
       </body>
     </html>
   );
