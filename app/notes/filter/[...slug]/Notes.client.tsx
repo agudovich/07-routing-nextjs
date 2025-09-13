@@ -1,4 +1,3 @@
-// app/notes/Notes.client.tsx
 "use client";
 
 import { useState } from "react";
@@ -10,18 +9,21 @@ import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
+import type { SelectedTag } from "@/types/note";
 import css from "./page.module.css";
 
 export interface NotesClientProps {
   initialPage: number;
   perPage: number;
   initialQuery: string;
+  tag: SelectedTag;
 }
 
 export default function NotesClient({
   initialPage,
   perPage,
   initialQuery,
+  tag,
 }: NotesClientProps) {
   const [page, setPage] = useState(initialPage);
   const [search, setSearch] = useState(initialQuery);
@@ -29,8 +31,8 @@ export default function NotesClient({
   const [isOpen, setIsOpen] = useState(false);
 
   const { data } = useQuery<FetchNotesResponse>({
-    queryKey: ["notes", page, perPage, debouncedSearch],
-    queryFn: () => fetchNotes({ page, perPage, search: debouncedSearch }),
+    queryKey: ["notes", page, perPage, debouncedSearch, tag],
+    queryFn: () => fetchNotes({ page, perPage, search: debouncedSearch, tag }),
     placeholderData: (prev) => prev,
   });
 
@@ -47,7 +49,6 @@ export default function NotesClient({
             setPage(1);
           }}
         />
-
         {totalPages > 1 && (
           <Pagination
             pageCount={totalPages}
@@ -55,7 +56,6 @@ export default function NotesClient({
             onPageChange={setPage}
           />
         )}
-
         <button className={css.button} onClick={() => setIsOpen(true)}>
           Create note +
         </button>

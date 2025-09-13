@@ -1,25 +1,29 @@
-"use client";
-
+// components/Header/Header.tsx
 import Link from "next/link";
+import TagsMenu from "@/components/TagsMenu/TagsMenu";
 import css from "./Header.module.css";
 
 export default function Header() {
   return (
     <header className={css.header}>
-      <Link href="/" aria-label="Home" className={css.logo}>
-        NoteHub
-      </Link>
+      <div className={css.inner}>
+        <Link href="/" aria-label="home" className={css.logo}>
+          NoteHub
+        </Link>
 
-      <nav aria-label="Main Navigation">
-        <ul className={css.navigation}>
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/notes">Notes</Link>
-          </li>
-        </ul>
-      </nav>
+        <nav className={css.nav} aria-label="Main Navigation">
+          <ul className={css.navList}>
+            <li>
+              <Link href="/" className={css.navLink}>
+                Home
+              </Link>
+            </li>
+            <li className={css.menuSlot}>
+              <TagsMenu />
+            </li>
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 }

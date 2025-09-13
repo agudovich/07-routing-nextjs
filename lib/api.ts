@@ -1,12 +1,14 @@
+// lib/api.ts
 import axios, {
   AxiosHeaders,
   type AxiosInstance,
   type InternalAxiosRequestConfig,
 } from "axios";
-import type { Note, NoteTag } from "@/types/note";
+import type { Note, SelectedTag } from "@/types/note";
 
-const API_URL = "https://notehub-public.goit.study/api";
-const api: AxiosInstance = axios.create({ baseURL: API_URL });
+const api: AxiosInstance = axios.create({
+  baseURL: "https://notehub-public.goit.study/api",
+});
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
@@ -22,6 +24,7 @@ export interface FetchNotesParams {
   page?: number;
   perPage?: number;
   search?: string;
+  tag?: SelectedTag;
 }
 
 export interface FetchNotesResponse {
@@ -29,23 +32,28 @@ export interface FetchNotesResponse {
   totalPages: number;
 }
 
-export interface CreateNotePayload {
-  title: string;
-  content?: string;
-  tag: NoteTag;
-}
-
-export async function fetchNotes(
-  params: FetchNotesParams
-): Promise<FetchNotesResponse> {
-  const { page = 1, perPage = 12, search = "" } = params;
+export async function fetchNotes({
+  page = 1,
+  perPage = 12,
+  search = "",
+  tag,
+}: FetchNotesParams) {
   const res = await api.get<FetchNotesResponse>("/notes", {
-    params: { page, perPage, search: search || undefined },
+    params: {
+      page,
+      perPage,
+      search,
+      ...(tag && tag !== "All" ? { tag } : {}), // All не шлём
+    },
   });
   return res.data;
 }
 
-export async function createNote(payload: CreateNotePayload): Promise<Note> {
+export async function createNote(payload: {
+  title: string;
+  content?: string;
+  tag: SelectedTag;
+}): Promise<Note> {
   const res = await api.post<Note>("/notes", payload);
   return res.data;
 }

@@ -19,7 +19,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, onClose]);
 
-  // ⬇️ Блокируем скролл body
+  // Блокируем скролл body
   useEffect(() => {
     if (!isOpen) return;
     const prev = document.body.style.overflow;
